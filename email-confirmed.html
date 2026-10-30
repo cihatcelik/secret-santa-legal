@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>E-posta doğrulandı – Secret Santa</title>
+  <meta name="title-tr" content="E-posta doğrulandı – Secret Santa">
+  <meta name="title-en" content="Email confirmed – Secret Santa">
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="lang.js"></script>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="./">
+        <img src="icon.png" alt="">
+        <div><strong>Secret Santa</strong><span>Elapps</span></div>
+      </a>
+      <div class="langs">
+        <button type="button" data-set-lang="tr">Türkçe</button>
+        <button type="button" data-set-lang="en">English</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section lang="tr">
+      <div class="card" data-state="ok">
+        <h1>🎉 E-postan doğrulandı!</h1>
+        <p>Hesabın hazır. Secret Santa uygulamasına dön ve e-posta adresin ile şifrenle giriş yap.</p>
+      </div>
+      <div class="card highlight" data-state="error" hidden>
+        <h1>Bağlantı geçersiz</h1>
+        <p>Bu doğrulama bağlantısının süresi dolmuş ya da daha önce kullanılmış. Hesabın zaten doğrulandıysa uygulamadan
+          giriş yapabilirsin. Değilse uygulamadan tekrar kayıt olarak yeni bir bağlantı iste.</p>
+      </div>
+    </section>
+
+    <section lang="en">
+      <div class="card" data-state="ok">
+        <h1>🎉 Your email is confirmed!</h1>
+        <p>Your account is ready. Go back to the Secret Santa app and sign in with your email and password.</p>
+      </div>
+      <div class="card highlight" data-state="error" hidden>
+        <h1>Link is invalid</h1>
+        <p>This confirmation link has expired or was already used. If your account is already confirmed, just sign in
+          from the app. Otherwise, sign up again in the app to get a new link.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">© 2026 Elapps · <a href="privacy.html">Gizlilik / Privacy</a></div></footer>
+
+  <script>
+    // Supabase doğrulamadan sonra buraya yönlendirir; sonuç adres çubuğunun # kısmında gelir.
+    // Hata varsa hata kartını göster. Oturum anahtarları bu sayfada kullanılmaz: adresten temizlenir.
+    (function () {
+      var params = new URLSearchParams(location.hash.slice(1) || location.search);
+      var failed = params.has('error') || params.has('error_code');
+      document.querySelectorAll('[data-state]').forEach(function (el) {
+        el.hidden = (el.dataset.state === 'error') !== failed;
+      });
+      var lang = new URLSearchParams(location.search).get('lang');
+      history.replaceState(null, '', location.pathname + (lang ? '?lang=' + lang : ''));
+    })();
+  </script>
+</body>
+</html>
